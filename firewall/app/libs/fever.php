@@ -60,7 +60,7 @@ class Fever
 		),
 
 		'use_celsius' 		=> false,
-		'refresh_interval'	=> 15, 	// minutes
+		'refresh_interval'	=> 10, 	// minutes
 		'item_expiration'	=> 10, 	// weeks
 		'new_window'		=> true,
 		'unread_counts'		=> false,
