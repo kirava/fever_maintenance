@@ -57,7 +57,7 @@ var Fever =
 
 					if (typeof target != 'undefined' && typeof parent != 'undefined')
 					{
-						if (parent.nodeName == 'BODY' && document.documentElement && !navigator.userAgent.match(/webkit/i))
+						if (parent.nodeName == 'BODY')
 						{
 							parent = document.documentElement;
 						};
