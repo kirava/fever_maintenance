@@ -3772,6 +3772,11 @@ class Fever
 					$item_id 		= $existing['id'];
 				}
 			}
+			// UPDATE GL
+			elseif ($existing = $this->get_one('items', $this->prepare_sql('`uid` = ?', $new_item['uid'])))
+			{
+				// DO NOTHING in case of duplicate item for different feeds
+			}
 			else // create
 			{
 				// no date provided or it couldn't be successfully parsed
