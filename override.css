@@ -77,6 +77,10 @@ s.box i
 	max-width: 40%;
 }
 
+div#prefs-behavior label {
+    color: black;
+}
+
 /*************************
 * GL Modifications 
 * file: reader.css
