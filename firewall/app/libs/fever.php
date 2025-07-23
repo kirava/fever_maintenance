@@ -69,7 +69,7 @@ class Fever
 		'item_allows'		=> 1, // text w/images
 		'sort_order'		=> 0, // newest first
 		'auto_spark'		=> false,
-		'per_page'			=> 20,
+		'per_page'			=> 40,
 		'auto_read'			=> true,
 
 		// iPhone-specifc
