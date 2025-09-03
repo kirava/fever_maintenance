@@ -12,6 +12,7 @@ Fever.Reader =
 	autoReadEnabled 	: 1,
 	autoReload			: 1,
 	toggleClick			: 1,
+	itemsCollapsed		: false,
 
 	page				: 1,
 	pageMaxed			: false,
@@ -151,6 +152,10 @@ Fever.Reader =
 					// alert(child.innerHTML);
 					content.appendChild(child);
 				};
+				
+				if(this.itemsCollapsed)
+					Fever.collapseAllItems();
+
 				Fever.Reader.onContentInserted();
 				Fever.Reader.onContentLoaded();
 			});
@@ -1570,7 +1575,55 @@ Fever.Reader =
 		this.refocus();
 		// alert('refocus(): focusElement()');
 	},
+	toogleMenu : function(){
+		if(typeof(this.isMenuShown) == "undefined")
+			this.isMenuShown = true;
+			
+		if(this.isMenuShown) {
+			css(one('#groups-container'), 'display', 'none');
+			css(one('#content-container'), 'margin-left', '40px');
+		}
+		else {
+			css(one('#groups-container'), 'display', 'block');
+			css(one('#content-container'), 'margin-left', '220px');
+		}
+		
+		this.isMenuShown = !this.isMenuShown;
+	},
+	collapseAllItems : function(){
+		var items = $('div#content-container div.full');
+		this.itemsCollapsed = !!!this.itemsCollapsed;
 
+		for(var i = 0; i < items.length; i++){
+
+			var item = items[i];
+			var itemId = item.id;
+			var content = one('#' + itemId + ' div.item-content');
+			var hasFull 	= (item.fullContent && item.fullContent != null);
+			var hasExcerpt	= (item.excerptContent && item.excerptContent != null);
+
+			removeClass(item, 'full');
+			
+			if (!hasFull)
+			{
+				item.fullContent = content.innerHTML;
+			};
+			
+			if (!hasExcerpt)
+			{
+				this.onContentRequested();
+				XHR.get('./?manage=item&excerpt&id=' + itemId.replace("item-",""), content, function(a)
+				{
+					Fever.Reader.onSubContentLoaded();
+					item.excerptContent = a.responseText;
+				});		
+			}
+			else
+			{
+				content.innerHTML 	= item.excerptContent;
+			};
+		}
+	},
 	onload : function()
 	{
 		document.addEventListener('click', function(e) { Fever.Reader.event = e; }, true); // shame
@@ -2175,6 +2228,22 @@ Fever.Reader =
 						acted = Fever.Reader.keyToToggleItemContent();
 					break;
 
+					// toogle menu
+					case 84: // t
+						if (isShortKey || inInput || inDialog) break;
+
+						Fever.Reader.toogleMenu();
+						acted = true;
+					break;
+				
+					// collapse all
+					case 67: // c
+						if (isShortKey || inInput || inDialog) break;
+
+						Fever.Reader.collapseAllItems();
+						acted = true;
+					break;
+				
 				};
 			};
 
@@ -2666,6 +2735,24 @@ Fever.menuControllers =
 					window.location.href = u('./?uninstall');
 				}
 			};
+			
+			var toogleMenu = 
+			{
+				text 	: 'Toogle menu<span class="key">t</span>',
+				onClick : function()
+				{
+					Fever.Reader.toogleMenu();
+				}
+			};
+
+			var collapseAllItems = 
+			{
+				text 	: 'Collapse all items<span class="key">c</span>',
+				onClick : function()
+				{
+					Fever.Reader.collapseAllItems();
+				}
+			};
 
 			this.items =
 			[
@@ -2675,6 +2762,8 @@ Fever.menuControllers =
 				divider,
 				showRead,
 				showFeeds,
+				toogleMenu,
+				collapseAllItems,
 				divider,
 				newGroup,
 				newFeed,
