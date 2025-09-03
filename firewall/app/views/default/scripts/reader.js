@@ -152,8 +152,8 @@ Fever.Reader =
 					// alert(child.innerHTML);
 					content.appendChild(child);
 				};
-				
-				if(this.itemsCollapsed)
+
+				if(Fever.Reader.itemsCollapsed)
 					Fever.collapseAllItems();
 
 				Fever.Reader.onContentInserted();
