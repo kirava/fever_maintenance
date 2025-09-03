@@ -154,7 +154,7 @@ Fever.Reader =
 				};
 
 				if(Fever.Reader.itemsCollapsed)
-					Fever.collapseAllItems();
+					Fever.Reader.collapseAllItems(true);
 
 				Fever.Reader.onContentInserted();
 				Fever.Reader.onContentLoaded();
@@ -1590,9 +1590,11 @@ Fever.Reader =
 		
 		this.isMenuShown = !this.isMenuShown;
 	},
-	collapseAllItems : function(){
+	collapseAllItems : function(keepState){
 		var items = $('div#content-container div.full');
-		this.itemsCollapsed = !!!this.itemsCollapsed;
+
+		if(keepState !== true)
+			this.itemsCollapsed = !!!this.itemsCollapsed;
 
 		for(var i = 0; i < items.length; i++){
 
