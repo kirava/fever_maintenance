@@ -104,6 +104,7 @@ Fever.Reader =
 		this.ui.section 	= 1;
 		this.ui.feedId 		= 0;
 		this.ui.groupId 	= groupId;
+		this.itemsCollapsed = false;
 		return this.loadRemote('section groupId feedId hasFocus');
 	},
 	loadFeed : function(feedId)
